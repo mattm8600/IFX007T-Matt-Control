@@ -13,7 +13,7 @@
  *    2 bidirectional motors (DC)
  */
 
-#include "IFX007T-Motor-Control.h"
+#include "IFX007T-Matt-Control.h"
 
 /**
  * Constructor 1
@@ -89,6 +89,11 @@ void IFX007TMotorControl::begin(void)
     digitalWrite(_PinAssignment[INPUTPIN][1], LOW);
     digitalWrite(_PinAssignment[INPUTPIN][2], LOW);
 
+  // Sets the pwm frequency of the pins: 9,10,11
+  // How the function works is it updates registries with values allowing you to lower
+  // the PWM for higher fidelity. We will have to fuck with it to get a better value.
+
+
     setPwmFrequency(_PinAssignment[INPUTPIN][0], 1);  // set Frequency to 31250 Hz
     setPwmFrequency(_PinAssignment[INPUTPIN][1], 1);
     setPwmFrequency(_PinAssignment[INPUTPIN][2], 1);
@@ -103,6 +108,23 @@ void IFX007TMotorControl::end(void)
   digitalWrite(_PinAssignment[INHIBITPIN][1], LOW);
   digitalWrite(_PinAssignment[INHIBITPIN][2], LOW);
 }
+
+
+
+
+// Duty cycle ranges from -127 to 127 (?)
+void IFX007TMotorControl::inverter(float frequency) {
+  uint8_t pin1 = 0;   // corresponds to U
+  uint8_t pin2 = 1;   // corresponds to V
+  digitalWrite(_PinAssignment[INHIBITPIN][pin1], HIGH);
+  digitalWrite(_PinAssignment[INHIBITPIN][pin2], HIGH);
+}
+
+
+
+
+
+
 
 /**
  * For uniderectional motor
@@ -866,7 +888,7 @@ void IFX007TMotorControl::UpdateHardware(uint8_t CommutationStep)
    PWM frequency divisors. His post can be viewed at:
      https://forum.arduino.cc/index.php?topic=16612#msg121031
 */
-void IFX007TMotorControl::setPwmFrequency(uint8_t pin, uint16_t divisor)
+void IFX007TMotorControl::setPwmFrequency(uint8_t pin, uint16_t divisor) // we need to change this!!!
 {
     byte mode;
     if (pin == 5 || pin == 6 || pin == 9 || pin == 10) {
