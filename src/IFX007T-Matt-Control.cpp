@@ -75,6 +75,8 @@ void IFX007TMotorControl::begin(void)
   #ifdef DEBUG_IFX007T
     pinMode(12, OUTPUT); //for debugging
   #endif
+    // Inhibit Pins -> Turn on and off the specific half bridges
+    // Input Pins -> Inputs to the transistor
     pinMode(_PinAssignment[INHIBITPIN][0], OUTPUT);
     pinMode(_PinAssignment[INHIBITPIN][1], OUTPUT);
     pinMode(_PinAssignment[INHIBITPIN][2], OUTPUT);
@@ -88,10 +90,18 @@ void IFX007TMotorControl::begin(void)
     digitalWrite(_PinAssignment[INPUTPIN][0], LOW);
     digitalWrite(_PinAssignment[INPUTPIN][1], LOW);
     digitalWrite(_PinAssignment[INPUTPIN][2], LOW);
+    
+    digitalWrite(_PinAssignment[INHIBITPIN][0], HIGH);
+    digitalWrite(_PinAssignment[INHIBITPIN][1], HIGH);
 
   // Sets the pwm frequency of the pins: 9,10,11
   // How the function works is it updates registries with values allowing you to lower
-  // the PWM for higher fidelity. We will have to fuck with it to get a better value.
+  // the PWM for higher fidelity. We will have to fuck with it to increase frequency.
+  // GOAL: Achieve PWM Frequency of 62500 Hz - Approx three samples for each waveform (shitty but can make square wave)
+  // QUESTION: Can we just use the faster clock (with the base of 62500 Hz?)
+  // QUESTION: Can we use TimerOne to do this and/or to get Timer 0 to work
+
+
 
 
     setPwmFrequency(_PinAssignment[INPUTPIN][0], 1);  // set Frequency to 31250 Hz
@@ -113,12 +123,31 @@ void IFX007TMotorControl::end(void)
 
 
 // Duty cycle ranges from -127 to 127 (?)
-void IFX007TMotorControl::inverter(float frequency) {
-  uint8_t pin1 = 0;   // corresponds to U
-  uint8_t pin2 = 1;   // corresponds to V
-  digitalWrite(_PinAssignment[INHIBITPIN][pin1], HIGH);
-  digitalWrite(_PinAssignment[INHIBITPIN][pin2], HIGH);
+void IFX007TMotorControl::inverter2(int counter) {
+  digitalWrite(10,HIGH);
+  digitalWrite(11,LOW);
+  delayMicroseconds(10);
+  digitalWrite(11,HIGH);
+  digitalWrite(10,LOW);
+  delayMicroseconds(10);
 }
+
+  /*
+  Psuedocode:
+  We need this function to loop itsself and then each clock signal go to the next duty cycle
+  WHILE(not stopped)
+  {
+    count++
+    if count = 1 {duty cycle = 127 + direction = positive}
+    if count = 2 {duty cycle = 0}
+    if count = 3 {
+      duty cycle = 127
+      direction = negative
+      count = 0
+    }
+    analogwrite and digitalwrite
+  }
+  */
 
 
 

@@ -67,7 +67,7 @@ class IFX007TMotorControl
         void    begin(void);
         void    end(void);
 
-        void    inverter(float frequency);
+        void    inverter2(int counter);
 
 
         void    setUniDirMotorSpeed(uint8_t motor, uint8_t dutycycle);                      //For Unidirectional motors
