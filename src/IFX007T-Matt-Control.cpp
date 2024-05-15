@@ -126,10 +126,10 @@ void IFX007TMotorControl::end(void)
 void IFX007TMotorControl::inverter2(int counter) {
   digitalWrite(10,HIGH);
   digitalWrite(11,LOW);
-  delayMicroseconds(10);
+  delayMicroseconds(17.1); //17.055
   digitalWrite(11,HIGH);
   digitalWrite(10,LOW);
-  delayMicroseconds(10);
+  delayMicroseconds(17.1); //17.055
 }
 
   /*
