@@ -93,6 +93,7 @@ void IFX007TMotorControl::begin(void)
     
     digitalWrite(_PinAssignment[INHIBITPIN][0], HIGH);
     digitalWrite(_PinAssignment[INHIBITPIN][1], HIGH);
+    digitalWrite(_PinAssignment[INHIBITPIN][2], HIGH); //added this
 
   // Sets the pwm frequency of the pins: 9,10,11
   // How the function works is it updates registries with values allowing you to lower
@@ -124,11 +125,11 @@ void IFX007TMotorControl::end(void)
 
 // Duty cycle ranges from -127 to 127 (?)
 void IFX007TMotorControl::inverter2(int counter) {
-  digitalWrite(10,HIGH);
+  digitalWrite(9,HIGH);
   digitalWrite(11,LOW);
   delayMicroseconds(17.1); //17.055
   digitalWrite(11,HIGH);
-  digitalWrite(10,LOW);
+  digitalWrite(9,LOW);
   delayMicroseconds(17.1); //17.055
 }
 

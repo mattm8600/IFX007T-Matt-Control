@@ -1,3 +1,13 @@
+# Alvier Mechatronics Project Code Repository
+This is a forked version of the Infineon Github repo with our example code. Here you will find the following files that we created:
+- **Solution 1** - Uses Digital Control of the Motor Shield
+- **Solution 2** - Uses PWM control of the Motor Shield for a DDS implementation (not functional)
+- **DDS Proof of Concept** - Needs filtering, but creates a sinusoidal signal at 60 Hz.
+
+## Usage
+- Clone the repository into your working directory's libraries folder
+- Copy The Alvier Sketches folder to your Arduino sketches directory
+
 # IFX007T-Motor-Control
 IFX007T NovalithIC™ based DC motor control
 
